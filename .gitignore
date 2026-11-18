@@ -221,3 +221,6 @@ __marimo__/
 
 # Structure
 structure.txt
+
+# DS_Store
+.DS_Store
