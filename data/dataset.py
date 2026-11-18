@@ -1,4 +1,5 @@
 from torchvision import datasets, transforms
+import numpy as np
 
 
 def get_transform(normalize=True):
@@ -31,3 +32,14 @@ def load_cifar10(root="./data", normalize=True):
     )
 
     return train_dataset, test_dataset
+
+def print_dataset_distribution(dataset):
+    """Prints the dataset class distribution"""
+
+    distribution = np.zeros(len(dataset.classes), dtype=int)
+
+    for i in range(len(dataset)):
+        distribution[dataset.targets[i]]+=1
+
+    for j in range(len(dataset.classes)):
+        print(dataset.classes[j] + ": " + str(distribution[j]) + " (" + str(distribution[j]/len(dataset)*100) + "%)")
