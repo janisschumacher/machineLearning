@@ -1,5 +1,6 @@
 from torchvision import datasets, transforms
 import numpy as np
+from torch.utils.data import DataLoader
 
 
 def get_transform(normalize=True):
@@ -7,7 +8,7 @@ def get_transform(normalize=True):
 
     if not normalize:
         return transforms.ToTensor()
-    
+
     return transforms.Compose(
         [
             transforms.ToTensor(),
@@ -33,13 +34,32 @@ def load_cifar10(root="./data", normalize=True):
 
     return train_dataset, test_dataset
 
+
+def get_dataloader_cifar10(batch_size=64, normalize=True):
+    """Returns the dataloaders for cifar10 dataset"""
+
+    train_dataset, test_dataset = load_cifar10(normalize=normalize)
+
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
+    test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+
+    return train_dataloader, test_dataloader
+
+
 def print_dataset_distribution(dataset):
     """Prints the dataset class distribution"""
 
     distribution = np.zeros(len(dataset.classes), dtype=int)
 
     for i in range(len(dataset)):
-        distribution[dataset.targets[i]]+=1
+        distribution[dataset.targets[i]] += 1
 
     for j in range(len(dataset.classes)):
-        print(dataset.classes[j] + ": " + str(distribution[j]) + " (" + str(distribution[j]/len(dataset)*100) + "%)")
+        print(
+            dataset.classes[j]
+            + ": "
+            + str(distribution[j])
+            + " ("
+            + str(distribution[j] / len(dataset) * 100)
+            + "%)"
+        )
